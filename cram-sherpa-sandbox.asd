@@ -33,9 +33,15 @@
   :license "BSD"
 
   :depends-on (roslisp
-               cram-bullet-reasoning
                cram-prolog
-               cram-utilities)
+               cram-utilities
+               cram-projection
+               cram-language
+               cram-bullet-reasoning
+               cram-bullet-reasoning-utilities
+               cram-sherpa-donkey
+               cram-sherpa-wasp
+               cram-sherpa-robots-common)
 
   :components
   ((:module "src"

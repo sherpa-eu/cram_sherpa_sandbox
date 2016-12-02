@@ -44,7 +44,55 @@
                                                     :mesh :terrain))
                                  (assert ?w (object :static-plane floor ((0 0 0) (0 0 0 1))
                                                     :normal (0 0 1) :constant 0))
-                                 (assert ?w (object :semantic-map sem-map ((0 0 50.012736)
-                                                                           (0 0 0 1))))
+                                 (assert ?w (object :semantic-map sem-map
+                                                    ((0 0 50.012736) (0 0 0 1))
+                                                    :color (0 1 0)))
+                                 (debug-window ?w))))
+  (spawn-actors))
+
+(defun spawn-actors ()
+  ;; (push '(:busy-genius "package://cram_sherpa_sandbox/resource/Operator_Point_at.dae" nil)
+  ;;       btr::*mesh-files*)
+  ;; (push '(:wasp "package://cram_sherpa_sandbox/resource/quadrotor.dae" nil)
+  ;;       btr::*mesh-files*)
+  ;; (push '(:hawk "package://cram_sherpa_sandbox/resource/iai_rmax.dae" nil)
+  ;;       btr::*mesh-files*)
+  ;; (push '(:box "package://cram_sherpa_sandbox/resource/Box_COL.stl" nil)
+  ;;       btr::*mesh-files*)
+  ;; (let ((donkey-urdf (cl-urdf:parse-urdf
+  ;;                     (roslisp:get-param "robot_description"))))
+  ;;   (push '(:hawk "package://cram_sherpa_sandbox/resource/iai_rmax.dae" nil)
+  ;;         btr::*mesh-files*)
+  ;;   (cut:force-ll (prolog:prolog `(and
+  ;;                                  (bullet-world ?w)
+  ;;                                  ;; (assert ?w (object :urdf donkey6 ((-11 0 64.3) (0 0 0 1))
+  ;;                                  ;;                    :urdf ,donkey-urdf :mass 10.0
+  ;;                                  ;;                    :color (0 0 1.0)))
+  ;;                                  (debug-window ?w)))))
+  (push '(:donkey "package://cram_sherpa_sandbox/resource/Sherpa_Donkey.stl" nil)
+          btr::*mesh-files*)
+  (push '(:wasp "package://cram_sherpa_sandbox/resource/wasp.stl" nil)
+          btr::*mesh-files*)
+  (cut:force-ll (prolog:prolog `(and
+                                 (bullet-world ?w)
+                                 (assert ?w (object :mesh donkey ((-11 0 64.3) (0 0 0 1))
+                                                    :mass 12.0 :color (1 0 0)
+                                                    :mesh :donkey))
+                                 (assert ?w (object :mesh red-wasp ((-11 0 66) (0 0 0 1))
+                                                    :mass 0.5 :color (1 0 0)
+                                                    :mesh :wasp))
+                                 (assert ?w (object :mesh blue-wasp ((-11 1 66) (0 0 0 1))
+                                                    :mass 0.5 :color (0 0 1)
+                                                    :mesh :wasp))
                                  (debug-window ?w)))))
 
+
+(defun test-donkey-go-somewhere (where)
+  (cram-sherpa-robots-common::with-dummy-process-modules
+    (donkey::go-somewhere where)))
+
+
+(defun test-wasp ()
+  (cram-projection:with-projection-environment wasp:wasp-bullet-projection-environment
+    (cpl:top-level
+      (cram-sherpa-robots-common:perform (desig:a motion (to switch-engine) (state on))))))
