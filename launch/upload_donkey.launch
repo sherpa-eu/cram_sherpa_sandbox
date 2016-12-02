@@ -1,0 +1,5 @@
+<launch>
+  <!-- donkey urdf -->
+  <arg name="model" default="$(find iai_sherpa_donkey)/urdf/donkey.urdf.xacro"/>
+  <param name="donkey_description" command="$(find xacro)/xacro.py '$(arg model)'" />
+</launch>
