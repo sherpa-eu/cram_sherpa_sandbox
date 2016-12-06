@@ -39,9 +39,11 @@
                cram-language
                cram-bullet-reasoning
                cram-bullet-reasoning-utilities
+               cram-sherpa-robots-common
                cram-sherpa-donkey
-               cram-sherpa-wasp
-               cram-sherpa-robots-common)
+               cram-sherpa-red-wasp
+               cram-sherpa-blue-wasp
+               cram-sherpa-hawk)
 
   :components
   ((:module "src"

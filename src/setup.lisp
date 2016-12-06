@@ -69,30 +69,45 @@
   ;;                                  ;;                    :urdf ,donkey-urdf :mass 10.0
   ;;                                  ;;                    :color (0 0 1.0)))
   ;;                                  (debug-window ?w)))))
+  (push '(:hawk "package://cram_sherpa_sandbox/resource/hawk.dae" nil)
+        btr::*mesh-files*)
   (push '(:donkey "package://cram_sherpa_sandbox/resource/Sherpa_Donkey.stl" nil)
-          btr::*mesh-files*)
+        btr::*mesh-files*)
   (push '(:wasp "package://cram_sherpa_sandbox/resource/wasp.stl" nil)
           btr::*mesh-files*)
   (cut:force-ll (prolog:prolog `(and
                                  (bullet-world ?w)
-                                 (assert ?w (object :mesh donkey ((-11 0 64.3) (0 0 0 1))
+                                 (assert ?w (object :mesh hawk:hawk ((-11 -4 68.3) (0 0 0 1))
+                                                    :mass 12.0 :color (0 0 1)
+                                                    :mesh :hawk))
+                                 (assert ?w (object :mesh donkey:donkey ((-11 0 64.3) (0 0 0 1))
                                                     :mass 12.0 :color (1 0 0)
                                                     :mesh :donkey))
-                                 (assert ?w (object :mesh red-wasp ((-11 0 66) (0 0 0 1))
+                                 (assert ?w (object :mesh red-wasp:red-wasp
+                                                    ((-11 0 66) (0 0 0 1))
                                                     :mass 0.5 :color (1 0 0)
                                                     :mesh :wasp))
-                                 (assert ?w (object :mesh blue-wasp ((-11 1 66) (0 0 0 1))
+                                 (assert ?w (object :mesh blue-wasp:blue-wasp
+                                                    ((-11 1 66) (0 0 0 1))
                                                     :mass 0.5 :color (0 0 1)
                                                     :mesh :wasp))
                                  (debug-window ?w)))))
 
 
-(defun test-donkey-go-somewhere (where)
-  (cram-sherpa-robots-common::with-dummy-process-modules
-    (donkey::go-somewhere where)))
+(prolog:def-fact-group sandbox-facts (cram-robot-interfaces:robot)
+  (<- (cram-robot-interfaces:robot red-wasp:red-wasp))
+  ;; (<- (cram-robot-interfaces:robot hawk:hawk))
+  )
 
-
-(defun test-wasp ()
-  (cram-projection:with-projection-environment wasp:wasp-bullet-projection-environment
+(defun test ()
+  (cram-projection:with-projection-environment helicopter:helicopter-bullet-projection-environment
     (cpl:top-level
-      (cram-sherpa-robots-common:perform (desig:a motion (to switch-engine) (state on))))))
+      (let ((?goal (cl-tf:pose->pose-stamped
+                    "map"
+                    0.0
+                    (cl-tf:copy-pose
+                     (object-pose 'red-wasp:red-wasp)
+                     :origin (cl-tf:copy-3d-vector (cl-tf:origin
+                                                    (object-pose 'red-wasp:red-wasp))
+                                                   :y 2)))))
+        (cram-sherpa-robots-common:perform (desig:a motion (to fly) (to ?goal)))))))
