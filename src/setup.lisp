@@ -39,14 +39,16 @@
   (setf btr:*current-bullet-world* nil)
   (cut:force-ll (prolog:prolog `(and
                                  (bullet-world ?w)
-                                 (assert ?w (object :mesh terrain ((0 0 50.012736) (0 0 0 1))
+                                 (cram-sherpa-robots-common::terrain-name ?terrain)
+                                 (assert ?w (object :mesh ?terrain
+                                                    ((0 0 50.012736) (0 0 0 1))
                                                     :mass 0.0 :color (0 0.5 0)
                                                     :mesh :terrain))
                                  (assert ?w (object :static-plane floor ((0 0 0) (0 0 0 1))
                                                     :normal (0 0 1) :constant 0))
-                                 (assert ?w (object :semantic-map sem-map
-                                                    ((0 0 50.012736) (0 0 0 1))
-                                                    :color (0 1 0)))
+                                 ;; (assert ?w (object :semantic-map sem-map
+                                 ;;                    ((0 0 50.012736) (0 0 0 1))
+                                 ;;                    :color (0 1 0)))
                                  (debug-window ?w))))
   (spawn-actors))
 
@@ -77,18 +79,20 @@
           btr::*mesh-files*)
   (cut:force-ll (prolog:prolog `(and
                                  (bullet-world ?w)
-                                 (assert ?w (object :mesh hawk:hawk ((-11 -4 68.3) (0 0 0 1))
+                                 (assert ?w (object :mesh hawk:hawk
+                                                    ((-11 -4 70.3) (0 0 0 1))
                                                     :mass 12.0 :color (0 0 1)
                                                     :mesh :hawk))
-                                 (assert ?w (object :mesh donkey:donkey ((-11 0 64.3) (0 0 0 1))
+                                 (assert ?w (object :mesh donkey:donkey
+                                                    ((-11 0 64.3) (0 0 0 1))
                                                     :mass 12.0 :color (1 0 0)
                                                     :mesh :donkey))
                                  (assert ?w (object :mesh red-wasp:red-wasp
-                                                    ((-11 0 66) (0 0 0 1))
+                                                    ((-11 0 67) (0 0 0 1))
                                                     :mass 0.5 :color (1 0 0)
                                                     :mesh :wasp))
                                  (assert ?w (object :mesh blue-wasp:blue-wasp
-                                                    ((-11 1 66) (0 0 0 1))
+                                                    ((-11 1 67) (0 0 0 1))
                                                     :mass 0.5 :color (0 0 1)
                                                     :mesh :wasp))
                                  (debug-window ?w)))))
