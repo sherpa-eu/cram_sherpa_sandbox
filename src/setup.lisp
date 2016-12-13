@@ -46,9 +46,9 @@
                                                     :mesh :terrain))
                                  (assert ?w (object :static-plane floor ((0 0 0) (0 0 0 1))
                                                     :normal (0 0 1) :constant 0))
-                                 ;; (assert ?w (object :semantic-map sem-map
-                                 ;;                    ((0 0 50.012736) (0 0 0 1))
-                                 ;;                    :color (0 1 0)))
+                                 (assert ?w (object :semantic-map sem-map
+                                                    ((0 0 50.012736) (0 0 0 1))
+                                                    :color (0 1 0)))
                                  (debug-window ?w))))
   (spawn-actors))
 
@@ -80,32 +80,35 @@
   (cut:force-ll (prolog:prolog `(and
                                  (bullet-world ?w)
                                  (assert ?w (object :mesh hawk:hawk
-                                                    ((-11 -4 70.3) (0 0 0 1))
+                                                    ((-9 -4 65.6) (0 0 0 1))
                                                     :mass 12.0 :color (0 0 1)
                                                     :mesh :hawk))
                                  (assert ?w (object :mesh donkey:donkey
-                                                    ((-11 0 64.3) (0 0 0 1))
+                                                    ((-11 2 64.3) (0 0 0 1))
                                                     :mass 12.0 :color (1 0 0)
                                                     :mesh :donkey))
                                  (assert ?w (object :mesh red-wasp:red-wasp
-                                                    ((-11 0 67) (0 0 0 1))
+                                                    ((-11 0 64.3) (0 0 0 1))
                                                     :mass 0.5 :color (1 0 0)
                                                     :mesh :wasp))
                                  (assert ?w (object :mesh blue-wasp:blue-wasp
-                                                    ((-11 1 67) (0 0 0 1))
+                                                    ((-11 1 64.3) (0 0 0 1))
                                                     :mass 0.5 :color (0 0 1)
                                                     :mesh :wasp))
                                  (debug-window ?w)))))
 
 
 (prolog:def-fact-group sandbox-facts (cram-robot-interfaces:robot)
-  (<- (cram-robot-interfaces:robot red-wasp:red-wasp))
-  ;; (<- (cram-robot-interfaces:robot hawk:hawk))
+  ;; (<- (cram-robot-interfaces:robot red-wasp:red-wasp))
+  (<- (cram-robot-interfaces:robot hawk:hawk))
   )
 
 (defun test ()
-  (cram-projection:with-projection-environment helicopter:helicopter-bullet-projection-environment
+  (cram-projection:with-projection-environment
+             helicopter:helicopter-bullet-projection-environment
     (cpl:top-level
+
+      (cram-sherpa-robots-common:perform (desig:a motion (to set-altitude) (to 5)))
       (let ((?goal (cl-tf:pose->pose-stamped
                     "map"
                     0.0
