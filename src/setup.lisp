@@ -99,8 +99,8 @@
 
 
 (prolog:def-fact-group sandbox-facts (cram-robot-interfaces:robot)
-  ;; (<- (cram-robot-interfaces:robot red-wasp:red-wasp))
-  (<- (cram-robot-interfaces:robot hawk:hawk))
+  (<- (cram-robot-interfaces:robot red-wasp:red-wasp))
+  ;; (<- (cram-robot-interfaces:robot hawk:hawk))
   )
 
 (defun test ()
